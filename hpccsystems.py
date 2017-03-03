@@ -19,6 +19,8 @@ for i in range(4):
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo adduser --ingroup admin --disabled-password hpcc"))
     node.addService(rspec.Execute(shell="/bin/sh",
+                                  command="sudo adduser hpcc sudo"))
+    node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo apt-get update"))
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo wget http://cdn.hpccsystems.com/releases/CE-Candidate-5.2.2/bin/platform/hpccsystems-platform-community_5.2.2-1trusty_amd64.deb"))
@@ -26,6 +28,15 @@ for i in range(4):
                                   command="sudo dpkg -i hpccsystems-platform-community_5.2.2-1trusty_amd64.deb"))
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo apt-get -y -f install"))
+    node.addService(rspec.Execute(shell="/bin/sh",
+                                  command="sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/environments/4.xml -O /etc/HPCCSystems/environment.xml"))
+    node.addService(rspec.Execute(shell="/bin/sh",
+                                  command="sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/conf/environment.conf -O /etc/HPCCSystems/environment.conf"))
+    if i == 0:
+        node.addService(rspec.Execute(shell="/bin/sh",
+                                      command="sleep 60"))
+        node.addService(rspec.Execute(shell="/bin/sh",
+                                      command="sudo service hpcc-init start"))
 
 # Print the RSpec to the enclosing page.
 portal.context.printRequestRSpec()
