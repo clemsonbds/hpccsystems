@@ -1,22 +1,45 @@
 import geni.portal as portal
 import geni.rspec.pg as rspec
+import geni.rspec.igext as IG
 
 pc = portal.Context()
+request = rspec.Request()
 
 pc.defineParameter("workerCount",
                    "Number of HPCC thorslaves (multiple of 4)",
                    portal.ParameterType.INTEGER, 4)
 
-param = pc.bindParameters()
+pc.defineParameter("controllerHost", "Name of controller node",
+                   portal.ParameterType.STRING, "node0", advanced=True,
+                   longDescription="The short name of the controller node.  You shold leave this alone unless you really want the hostname to change.")
+
+params = pc.bindParameters()
+
+tourDescription = "This profile provides a configurable HPCCSystems testbed one master and customizable thorslaves (multiples of four)."
+
+tourInstructions = \
+  """
+### Basic Instructions
+Once your experiment nodes have booted, and this profile's configuration scripts have finished deploying HPCCSystems inside your experiment, you'll be able to visit [the ECLWatch interface](http://{host-%s}:8010) (approx. 5-15 minutes).  
+""" % (params.controllerHost)
+
+#
+# Setup the Tour info with the above description and instructions.
+#  
+tour = IG.Tour()
+tour.Description(IG.Tour.TEXT,tourDescription)
+tour.Instructions(IG.Tour.MARKDOWN,tourInstructions)
+request.addTour(tour)
+
 
 # Create a Request object to start building the RSpec.
-request = portal.context.makeRequestRSpec()
- 
+#request = portal.context.makeRequestRSpec()
+#request 
 # Create a link with type LAN
 link = request.LAN("lan")
 
 # Generate the nodes
-for i in range(param.workerCount + 1):
+for i in range(params.workerCount + 1):
     node = request.RawPC("node" + str(i))
     node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD"
     iface = node.addInterface("if" + str(i))
@@ -36,7 +59,7 @@ for i in range(param.workerCount + 1):
                                   command="sudo dpkg -i hpccsystems-platform-community_5.2.2-1trusty_amd64.deb"))
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo apt-get -y -f install"))
-    getEnvFile = "sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/environments/" + str(param.workerCount) + ".xml -O /etc/HPCCSystems/environment.xml"
+    getEnvFile = "sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/environments/" + str(params.workerCount) + ".xml -O /etc/HPCCSystems/environment.xml"
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command=getEnvFile))
     node.addService(rspec.Execute(shell="/bin/sh",
@@ -48,4 +71,4 @@ for i in range(param.workerCount + 1):
                                       command="sudo service hpcc-init start"))
 
 # Print the RSpec to the enclosing page.
-portal.context.printRequestRSpec()
+portal.context.printRequestRSpec(request)
