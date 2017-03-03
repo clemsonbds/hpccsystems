@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Edited with ConfigMgr on ip 130.127.55.45 on 2017-03-03T16:58:28 -->
+<!-- Edited with ConfigMgr on ip 130.127.55.45 on 2017-03-03T16:59:09 -->
 <Environment>
  <EnvSettings>
   <allow_pgcache_flush>true</allow_pgcache_flush>
@@ -41,6 +41,22 @@
             domain="localdomain"
             name="node001005"
             netAddress="192.168.1.5"/>
+  <Computer computerType="linuxmachine"
+            domain="localdomain"
+            name="node001006"
+            netAddress="192.168.1.6"/>
+  <Computer computerType="linuxmachine"
+            domain="localdomain"
+            name="node001007"
+            netAddress="192.168.1.7"/>
+  <Computer computerType="linuxmachine"
+            domain="localdomain"
+            name="node001008"
+            netAddress="192.168.1.8"/>
+  <Computer computerType="linuxmachine"
+            domain="localdomain"
+            name="node001009"
+            netAddress="192.168.1.9"/>
   <ComputerType computerType="linuxmachine"
                 manufacturer="unknown"
                 name="linuxmachine"
@@ -373,6 +389,22 @@
              directory="/var/lib/HPCCSystems/mydafilesrv"
              name="s5"
              netAddress="192.168.1.5"/>
+   <Instance computer="node001006"
+             directory="/var/lib/HPCCSystems/mydafilesrv"
+             name="s6"
+             netAddress="192.168.1.6"/>
+   <Instance computer="node001007"
+             directory="/var/lib/HPCCSystems/mydafilesrv"
+             name="s7"
+             netAddress="192.168.1.7"/>
+   <Instance computer="node001008"
+             directory="/var/lib/HPCCSystems/mydafilesrv"
+             name="s8"
+             netAddress="192.168.1.8"/>
+   <Instance computer="node001009"
+             directory="/var/lib/HPCCSystems/mydafilesrv"
+             name="s9"
+             netAddress="192.168.1.9"/>
   </DafilesrvProcess>
   <DaliServerProcess build="_"
                      buildSet="dali"
@@ -844,6 +876,26 @@
              name="s5"
              netAddress="192.168.1.5"
              program="/opt/HPCCSystems/bin/ftslave"/>
+   <Instance computer="node001006"
+             directory="/var/lib/HPCCSystems/myftslave"
+             name="s6"
+             netAddress="192.168.1.6"
+             program="/opt/HPCCSystems/bin/ftslave"/>
+   <Instance computer="node001007"
+             directory="/var/lib/HPCCSystems/myftslave"
+             name="s7"
+             netAddress="192.168.1.7"
+             program="/opt/HPCCSystems/bin/ftslave"/>
+   <Instance computer="node001008"
+             directory="/var/lib/HPCCSystems/myftslave"
+             name="s8"
+             netAddress="192.168.1.8"
+             program="/opt/HPCCSystems/bin/ftslave"/>
+   <Instance computer="node001009"
+             directory="/var/lib/HPCCSystems/myftslave"
+             name="s9"
+             netAddress="192.168.1.9"
+             program="/opt/HPCCSystems/bin/ftslave"/>
   </FTSlaveProcess>
   <SashaServerProcess autoRestartInterval="0"
                       build="_"
@@ -934,7 +986,11 @@
    <ThorSlaveProcess computer="node001003" name="s1"/>
    <ThorSlaveProcess computer="node001004" name="s2"/>
    <ThorSlaveProcess computer="node001005" name="s3"/>
-   <ThorSlaveProcess computer="node001002" name="s4"/>
+   <ThorSlaveProcess computer="node001006" name="s4"/>
+   <ThorSlaveProcess computer="node001007" name="s5"/>
+   <ThorSlaveProcess computer="node001008" name="s6"/>
+   <ThorSlaveProcess computer="node001009" name="s7"/>
+   <ThorSlaveProcess computer="node001002" name="s8"/>
   </ThorCluster>
   <Topology build="_" buildSet="topology" name="topology">
    <Cluster name="hthor" prefix="hthor">

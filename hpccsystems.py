@@ -1,6 +1,14 @@
 import geni.portal as portal
 import geni.rspec.pg as rspec
 
+pc = portal.Context()
+
+pc.defineParameter("workerCount",
+                   "Number of HPCC thorslaves (multiple of 4)",
+                   portal.ParameterType.INTEGER, 4)
+
+param = pc.bindParameters()
+
 # Create a Request object to start building the RSpec.
 request = portal.context.makeRequestRSpec()
  
@@ -8,7 +16,7 @@ request = portal.context.makeRequestRSpec()
 link = request.LAN("lan")
 
 # Generate the nodes
-for i in range(4):
+for i in range(param.workerCount + 1):
     node = request.RawPC("node" + str(i))
     node.disk_image = "urn:publicid:IDN+emulab.net+image+emulab-ops:UBUNTU14-64-STD"
     iface = node.addInterface("if" + str(i))
@@ -28,8 +36,9 @@ for i in range(4):
                                   command="sudo dpkg -i hpccsystems-platform-community_5.2.2-1trusty_amd64.deb"))
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo apt-get -y -f install"))
+    getEnvFile = "sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/environments/" + str(param.workerCount) + ".xml -O /etc/HPCCSystems/environment.xml"
     node.addService(rspec.Execute(shell="/bin/sh",
-                                  command="sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/environments/4.xml -O /etc/HPCCSystems/environment.xml"))
+                                  command=getEnvFile))
     node.addService(rspec.Execute(shell="/bin/sh",
                                   command="sudo wget https://raw.githubusercontent.com/clemsonbds/hpccsystems/master/conf/environment.conf -O /etc/HPCCSystems/environment.conf"))
     if i == 0:
